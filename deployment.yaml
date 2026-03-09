@@ -19,12 +19,27 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 3000
+        resources:
+          requests:
+            cpu:  "50m"
+            memory:  "64Mi"
+          limits:
+            cpu:  "200m"
+            memory:  "128Mi"
         livenessProbe:
           httpGet:
             path:  /health
             port:  3000
           initialDelaySeconds:  5
           periodSeconds:  10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path:  /health
+            port:  3000
+          initialDelaySeconds:  5
+          periodSeconds:  5
+      
         env:
         - name: APP_MESSAGE
           valueFrom:
